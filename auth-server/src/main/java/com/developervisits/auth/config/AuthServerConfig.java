@@ -59,7 +59,5 @@ public class AuthServerConfig  extends AuthorizationServerConfigurerAdapter{
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
 	  endpoints.authenticationManager(authenticationManager);
 	}
-	
-	
-	
+
 }

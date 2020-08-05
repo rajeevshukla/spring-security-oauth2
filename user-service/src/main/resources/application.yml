@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: User-Service
+security:
+  oauth2:
+    client:
+      client-id:
+      client-secret:
+    resource:
+      token-info-uri: http://localhost:1234/auth/oauth/check_token
+      #user-info-uri: http://localhost:1234/auth/oauth/user
+      jwt:
+        key-uri: http://localhost:1234/auth/oauth/token_key
