@@ -45,7 +45,7 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
                 .secret(passwordEncoder().encode("secret"))
                 .authorizedGrantTypes("password", "authorization_code")
                 .scopes("user_info")
-                .redirectUris("http://localhost:9050/oauth2Success")
+                .redirectUris("http://localhost:8089/oauth2Success")
                 .autoApprove(true)
                 .and()
 
@@ -53,12 +53,11 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
                 .secret(passwordEncoder().encode("secret"))
                 .authorizedGrantTypes("password", "authorization_code", "client_credentials")
                 .scopes("user_info")
-                .redirectUris("http://localhost:9050/oauth2Success")
+                .redirectUris("http://localhost:8089/oauth2Success")
                 .autoApprove(true);
     }
 
     // when client uses grant type as password you need to pass your auth manager to auth server so that auth server knows where to look for user name password
-
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         endpoints.authenticationManager(authenticationManager)
