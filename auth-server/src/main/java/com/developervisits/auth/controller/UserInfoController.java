@@ -13,14 +13,8 @@ import java.util.HashMap;
 @RestController
 public class UserInfoController {
     @GetMapping("/userinfo")
-    public HashMap<String, Object> userInfo(Principal principal) {
-        HashMap<String, Object> userInfo = new HashMap<>();
+    public Principal userInfo(Principal principal) {
 
-
-        userInfo.put("userName", principal.getName());
-        userInfo.put("authorities", SecurityContextHolder.getContext().getAuthentication().getAuthorities());
-
-
-        return userInfo;
+        return principal;
     }
 }

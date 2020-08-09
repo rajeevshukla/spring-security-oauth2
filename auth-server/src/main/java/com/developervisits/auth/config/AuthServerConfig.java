@@ -17,6 +17,8 @@ import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenCo
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
 
+import javax.annotation.PostConstruct;
+
 @Configuration
 @EnableAuthorizationServer
 public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
@@ -32,7 +34,7 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
 
-        security.tokenKeyAccess("permitAll()").checkTokenAccess("isAuthenticated()");
+        security.tokenKeyAccess("permitAll()").checkTokenAccess("isAuthenticated()").allowFormAuthenticationForClients();
         // check_token URL should be authentication which is actually called from resource server to verify that the token is actually valid
         //tokenKeyAccess , /token_key is used to get public key by resource server on startup which will later validate the gwt signature
         // this avoids calling auth server again from resource server so that less number of calls made to auth server.
@@ -41,20 +43,25 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 
-        clients.inMemory().withClient("userServiceClient")
-                .secret(passwordEncoder().encode("secret"))
-                .authorizedGrantTypes("password", "authorization_code")
-                .scopes("user_info")
-                .redirectUris("http://localhost:8089/user-service/oauth2Success")
-                .autoApprove(true)
-                .and()
+      /*  clients
+                .inMemory()
+                .withClient("clientapp").secret(passwordEncoder().encode("123456"))
+                .authorizedGrantTypes("password", "authorization_code", "refresh_token")
+                .authorities("READ_ONLY_CLIENT")
+                .scopes("read_profile_info")
+                .resourceIds("oauth2-resource")
+                .redirectUris("http://localhost:8080/login")
+                .accessTokenValiditySeconds(120)
+                .refreshTokenValiditySeconds(240000).autoApprove(true);*/
 
-                .withClient("client2")
-                .secret(passwordEncoder().encode("secret"))
-                .authorizedGrantTypes("password", "authorization_code", "client_credentials")
+        clients.inMemory()
+                .withClient("clientapp")
+                .secret("{noop}123456")
+                .authorizedGrantTypes("authorization_code")
                 .scopes("user_info")
-                .redirectUris("http://localhost:8089/oauth2Success")
-                .autoApprove(true);
+                .autoApprove(true)
+                .redirectUris("http://localhost:8082/user/oauth2/code/");
+
     }
 
     // when client uses grant type as password you need to pass your auth manager to auth server so that auth server knows where to look for user name password
@@ -64,6 +71,11 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
 //                .tokenStore(tokenStore()).accessTokenConverter(accessTokenConverter());
     }
 
+
+    @PostConstruct
+    public  void init() {
+        System.out.println(passwordEncoder().encode("123456"));
+    }
 
    /* @Bean
     TokenStore tokenStore() {

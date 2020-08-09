@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: User-Service
+  security:
+    oauth2:
+      client:
+        registration:
+          userserviceclient:
+            client-id: clientapp
+            client-secret: 123456
+            scope: user_info
+            redirect-uri: http://localhost:8089/user-service/oauth2/code/userServiceClient
+            client-authentication-method: basic
+            authorization-grant-type: authorization_code
+            provider: userServiceProvider
+        provider:
+          userServiceProvider:
+            token-uri: http://localhost:8080/auth/oauth/token
+            authorization-uri: http://localhost:8080/auth/oauth/authorize
+            user-info-uri: http://localhost:8080/auth/userinfo
+            user-name-attribute: username
+server:
+  port: 8089
+  servlet:
+    context-path: /user

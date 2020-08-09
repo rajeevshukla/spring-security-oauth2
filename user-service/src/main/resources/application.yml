@@ -1,25 +1,32 @@
+server:
+  port: 8082
+  servlet:
+    session:
+      cookie:
+        name: UISESSION
+
+logging:
+  level:
+    root: info
 spring:
   application:
-    name: User-Service
+    name: user-service
   security:
     oauth2:
       client:
         registration:
-          userserviceclient:
-            client-id: userServiceClient
-            client-secret: secret
+          auth-server: # The registration Id which you need to pass in /oauth2/authorization/auth-server
+            client-id: clientapp
+            client-secret: 123456
+            client-name: Auth Server
             scope: user_info
-            redirect-uri: http://localhost:8089/user-service/oauth2/code/userServiceClient
+            provider: custom-provider
+            redirect-uri: http://localhost:8082/user/oauth2/code/
             client-authentication-method: basic
             authorization-grant-type: authorization_code
-            provider: userServiceProvider
         provider:
-          userServiceProvider:
-            token-uri: http://localhost:8080/auth/oauth/token
-            authorization-uri: http://localhost:8080/auth/oauth/authorize
-            user-info-uri: http://localhost:8080/auth/userinfo
-            user-name-attribute: username
-server:
-  port: 8089
-  servlet:
-    context-path: /user
+          custom-provider:
+            token-uri: http://localhost:8081/auth/oauth/token
+            authorization-uri: http://localhost:8081/auth/oauth/authorize
+            user-info-uri: http://localhost:8081/auth/userinfo
+            user-name-attribute: name
