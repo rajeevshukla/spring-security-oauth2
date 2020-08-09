@@ -1,34 +1,25 @@
 spring:
   application:
     name: User-Service
-security:
-  oauth2:
-    client:
-      registration:
-        userserviceclient:
-          client-id:
-          client-secret:
-          scope: user_info
-          redirect-uri:
-          client-authentication-method: basic
-          authorization-grant-type: authorization_code
-          provider: user-service-provider
+  security:
+    oauth2:
+      client:
+        registration:
+          userserviceclient:
+            client-id: userServiceClient
+            client-secret: secret
+            scope: user_info
+            redirect-uri: http://localhost:8089/user-service/oauth2/code/userServiceClient
+            client-authentication-method: basic
+            authorization-grant-type: authorization_code
+            provider: userServiceProvider
         provider:
-          user-service-provider:
-            token-uri:
-            authorization-uri:
-            user-info-uri:
+          userServiceProvider:
+            token-uri: http://localhost:8080/auth/oauth/token
+            authorization-uri: http://localhost:8080/auth/oauth/authorize
+            user-info-uri: http://localhost:8080/auth/userinfo
             user-name-attribute: username
-
-
-
-
-      client-id:
-      client-secret:
-    resource:
-      token-info-uri: http://localhost:8080/auth/oauth/check_token
-      #user-info-uri: http://localhost:1234/auth/oauth/user
-      jwt:
-        key-uri: http://localhost:8080/auth/oauth/token_key
 server:
   port: 8089
+  servlet:
+    context-path: /user

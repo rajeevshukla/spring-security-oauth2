@@ -41,11 +41,11 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 
-        clients.inMemory().withClient("client")
+        clients.inMemory().withClient("userServiceClient")
                 .secret(passwordEncoder().encode("secret"))
                 .authorizedGrantTypes("password", "authorization_code")
                 .scopes("user_info")
-                .redirectUris("http://localhost:8089/oauth2Success")
+                .redirectUris("http://localhost:8089/user-service/oauth2Success")
                 .autoApprove(true)
                 .and()
 
@@ -60,12 +60,12 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
     // when client uses grant type as password you need to pass your auth manager to auth server so that auth server knows where to look for user name password
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-        endpoints.authenticationManager(authenticationManager)
-                .tokenStore(tokenStore()).accessTokenConverter(accessTokenConverter());
+        endpoints.authenticationManager(authenticationManager);
+//                .tokenStore(tokenStore()).accessTokenConverter(accessTokenConverter());
     }
 
 
-    @Bean
+   /* @Bean
     TokenStore tokenStore() {
         return new JwtTokenStore(accessTokenConverter());
     }
@@ -76,5 +76,5 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
         KeyStoreKeyFactory keyStoreKeyFactory = new KeyStoreKeyFactory(new ClassPathResource("mykeystore.jks"), "changeit".toCharArray());
         jwtAccessTokenConverter.setKeyPair(keyStoreKeyFactory.getKeyPair("tomcat"));
         return jwtAccessTokenConverter;
-    }
+    }*/
 }
