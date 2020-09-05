@@ -38,7 +38,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
  /// enabling spring security enpoint so that it should
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/login","/oauth/autorize**").permitAll()
-                .anyRequest().authenticated().and().formLogin().permitAll();
+        http.authorizeRequests().antMatchers("/login").permitAll()
+                .anyRequest().authenticated().and().formLogin();
     }
 }

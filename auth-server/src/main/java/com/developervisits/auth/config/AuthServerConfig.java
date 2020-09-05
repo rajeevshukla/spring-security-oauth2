@@ -3,7 +3,6 @@ package com.developervisits.auth.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -12,10 +11,6 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
-import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
-import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
-import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
 
 import javax.annotation.PostConstruct;
 
@@ -57,10 +52,10 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
         clients.inMemory()
                 .withClient("clientapp")
                 .secret("{noop}123456")
-                .authorizedGrantTypes("authorization_code")
+                .authorizedGrantTypes("authorization_code", "password")
                 .scopes("user_info")
                 .autoApprove(true)
-                .redirectUris("http://localhost:8082/user/oauth2/code/");
+                .redirectUris("http://localhost:8082/user/oauth2/code/userservice");
 
     }
 
@@ -74,7 +69,7 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
 
     @PostConstruct
     public  void init() {
-        System.out.println(passwordEncoder().encode("123456"));
+//        System.out.println(passwordEncoder().encode("123456"));
     }
 
    /* @Bean
