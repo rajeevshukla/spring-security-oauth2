@@ -1,4 +1,4 @@
-
+debug: true
 spring:
   application:
     name: auth-server
