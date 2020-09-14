@@ -14,19 +14,14 @@ import javax.annotation.PostConstruct;
 @Order(1)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    Oauth2SuccessHandler successHandler;
-
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
-       http.authorizeRequests().antMatchers("/login","/test").permitAll()
-               .anyRequest().authenticated()
-               .and().formLogin()
-               .and().oauth2Login()
-               .successHandler(successHandler)
-               .and().csrf().disable();
-
-         }
+    public void configure(HttpSecurity http) throws Exception {
+        http.antMatcher("/**").authorizeRequests()
+                .antMatchers("/", "/login**").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .oauth2Login();
+    }
 
     @PostConstruct
     public void init(){

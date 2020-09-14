@@ -4,29 +4,25 @@ server:
     session:
       cookie:
         name: UISESSION
-
-logging:
-  level:
-    root: info
 spring:
-  application:
-    name: user-service
+  thymeleaf:
+    cache: false
   security:
     oauth2:
       client:
         registration:
-          userservice: # The registration Id which you need to pass in /oauth2/authorization/auth-server
-            client-id: clientapp
-            client-secret: 123456
+          custom-client:
+            client-id: R2dpxQ3vPrtfgF72
+            client-secret: fDw7Mpkk5czHNuSRtmhGmAGL42CaxQB9
             client-name: Auth Server
             scope: user_info
-            redirect-uri: http://localhost:8082/login/oauth2/code/userservice
+            provider: custom-provider
+            redirect-uri: http://localhost:8082/login/oauth2/code/
             client-authentication-method: basic
             authorization-grant-type: authorization_code
-            provider: lspace-auth-server
         provider:
-          lspace-auth-server:
-            token-uri: http://localhost:4444/auth/oauth/token
-            authorization-uri: http://localhost:4444/auth/oauth/authorize
-            user-info-uri: http://localhost:4444/auth/userInfo
+          custom-provider:
+            token-uri: http://localhost:8081/auth/oauth/token
+            authorization-uri: http://localhost:8081/auth/oauth/authorize
+            user-info-uri: http://localhost:8081/auth/user/me
             user-name-attribute: name

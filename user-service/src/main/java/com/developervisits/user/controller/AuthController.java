@@ -1,27 +1,25 @@
 package com.developervisits.user.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.PostConstruct;
 import java.security.Principal;
 
-@Controller
+@RestController
 public class AuthController {
 
-    @GetMapping("/userInfo")
-     public String userInfo(Principal principal) {
-        return principal.getName();
+    @GetMapping("/securedPage")
+    public Principal securedPage(Model model, Principal principal) {
+
+        return principal;
     }
 
-    @GetMapping("/test")
-    public String test() {
-        return "Test";
-    }
-
-    @PostConstruct
-    public void init() {
-        System.out.println("working");
+    @GetMapping("/")
+    public String index(Model model, Principal principal) {
+        return "index";
     }
 }
