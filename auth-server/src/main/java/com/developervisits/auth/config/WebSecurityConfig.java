@@ -1,6 +1,8 @@
 package com.developervisits.auth.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -9,7 +11,9 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 
 @Configuration
 @EnableWebSecurity
@@ -23,13 +27,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.requestMatchers()
+        http.csrf().disable().requestMatchers()
                 .antMatchers("/login", "/oauth/authorize")
                 .and()
                 .authorizeRequests()
                 .anyRequest().authenticated()
                 .and()
-                .formLogin().permitAll();
+                .formLogin();
     }
 
     @Override
